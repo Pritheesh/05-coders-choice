@@ -1,20 +1,19 @@
-Name: ____________           ID:   ____________
+Name: Pritheesh Panchmahalkar
+ID:   47524741
 
 ## Proposed Project
 
-> Replace this paragraph with the description of what your project
-> will do. Tell me what kind of interface it will have, and roughly
-> how it will work. I don't need more than three or four sentences,
-> unless you feel compelled to write more.
+Digital Signature
+
+I would like to develop a console based application which implements a digital signature. 
+Sender uses the services of the server to generate a digital signature and sends it to a receiver.
+The receiver then uses the services of the server again and check for the integrity and authentication of the message received.
+
+
+
 
 ## Outline Structure
 
-> Describe how you'll organize your code. What is the process and
-> supervision structure? If it uses a framework, how does it fit in. I
-> just need to understand the direction you plan to take. Again, three
-> or four sentences are probably enough.
-
-
-
-> replace all the ">" lines with your content, then push this to
-> github and issue a merge request.
+An application that stores/generates the keys for encryption and decryption. (acts like a CA)
+Another application which acts as a server that uses the above application for keys and does the encryption, decryption and hashing
+A sender and receiver use the server to generate digital signatures and check for integrity and authentication of message sent.
