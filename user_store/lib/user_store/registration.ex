@@ -1,7 +1,5 @@
 defmodule UserStore.Registration do
 
-  use GenServer
-
   def register(credentials) do
     credentials
     |> validate_username
@@ -54,11 +52,12 @@ defmodule UserStore.Registration do
     end)
   end
 
-  defp validate_username({username, _password} = credentials) do
-    error = String.downcase(username)
+  defp validate_username({username, password}) do
+    username = String.downcase(username)
+    error = username
             |> validate_length(3, 100)
             |> check_username(user_exists?(username))
-    { error, credentials }
+    { error, {username, password} }
   end
 
   defp user_exists?(username) do

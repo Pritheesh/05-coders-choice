@@ -5,7 +5,7 @@
 
 ## Working
 
-Go to `05-coders-choice/user_store` and execute the following commands.
+* Go to `05-coders-choice/user_store` and execute the following commands.
 ~~~ elixir
 iex -S mix
 
