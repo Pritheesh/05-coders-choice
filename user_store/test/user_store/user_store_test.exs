@@ -41,5 +41,5 @@ defmodule UserStore.UserStoreTest do
     error = UserStore.get_private_key {"Pra", "asdasd"}
     assert error == "Invalid credentials. Please try again."
   end
-  
+
 end

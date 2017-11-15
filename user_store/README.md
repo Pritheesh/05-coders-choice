@@ -6,8 +6,9 @@
 ## Working
 
 * Go to `05-coders-choice/user_store` and execute the following commands.
+
+* iex -S mix
 ~~~ elixir
-iex -S mix
 
 iex> UserStore.register {"username", "Pass!234"}
 # :ok
