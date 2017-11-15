@@ -29,8 +29,8 @@ defmodule UserStore.Registration do
     public_key  = "public_key.pem"
     private_key = "private_key.pem"
 
-    {_, 0} = System.cmd "openssl", [ "genrsa", "-out", private_key, "2048" ], [stderr_to_stdout: true]
-    {_, 0} = System.cmd "openssl",
+    { _, 0 } = System.cmd "openssl", [ "genrsa", "-out", private_key, "2048" ], [stderr_to_stdout: true]
+    { _, 0 } = System.cmd "openssl",
       [ "rsa", "-pubout", "-in", private_key, "-out", public_key ], [stderr_to_stdout: true]
 
     { nil, credentials, read_files(public_key, private_key) }
@@ -57,7 +57,7 @@ defmodule UserStore.Registration do
     error = username
             |> validate_length(3, 100)
             |> check_username(user_exists?(username))
-    { error, {username, password} }
+    { error, { username, password } }
   end
 
   defp user_exists?(username) do
@@ -97,7 +97,7 @@ defmodule UserStore.Registration do
     |> Regex.match?(password)
   end
 
-  def hash_password(true, {username, password}) do
+  def hash_password(true, { username, password }) do
     password = username
               |> generate_salt
               |> hash(password)
@@ -105,7 +105,7 @@ defmodule UserStore.Registration do
     { nil, { username, password } }
   end
 
-  def hash_password(false, { username, password}) do
+  def hash_password(false, { username, password }) do
     error = "Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 special " <>
             "character, 1 number and minimum length of 8"
     { error, { username, password } }

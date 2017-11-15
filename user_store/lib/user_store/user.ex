@@ -7,5 +7,4 @@ defmodule UserStore.User do
     private_key: ""
   )
 
-
 end
