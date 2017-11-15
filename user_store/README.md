@@ -31,7 +31,7 @@ iex> UserStore.register {"username", "Pass!234"}
 iex> UserStore.display
 # ...
 
-iex> UserStore.get_private_key {"username", "Pass!234}
+iex> UserStore.get_private_key {"username", "Pass!234"}
 # ...
 
 iex> UserStore.get_public_key "username"
