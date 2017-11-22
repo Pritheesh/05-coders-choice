@@ -11,19 +11,22 @@ defmodule UserStore.Registration do
   def display(), do: get_usernames()
 
   defp put_state({ nil, {username, password}, { public, private }}) do
-    Agent.update(UserStore.Store, fn store ->
-      [ %UserStore.User
+    {
+      :ok,
+      Agent.update(UserStore.Store, fn store ->
+        [ %UserStore.User
           {
             username:    username,
             password:    password,
             public_key:  public,
             private_key: private
           }
-        | store ]
-    end)
+          | store ]
+      end)
+    }
   end
 
-  defp put_state({error, _credentials}), do: error
+  defp put_state({error, _credentials}), do: { :error, error }
 
   defp generate_keys({ nil, credentials }) do
     public_key  = "public_key.pem"
@@ -43,7 +46,13 @@ defmodule UserStore.Registration do
     { :ok, public } = File.read(public_key)
     File.rm!(private_key)
     File.rm!(public_key)
-    { public, private }
+    { decode(public), decode(private) }
+  end
+
+  defp decode(key) do
+    [key] = :public_key.pem_decode(key)
+    key
+    |> :public_key.pem_entry_decode
   end
 
   defp get_usernames() do

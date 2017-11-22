@@ -15,10 +15,10 @@ defmodule UserStore.Login do
     |> check_nil(:public_key)
   end
 
-  defp check_nil(nil, :public_key),   do: "Invalid username. Please enter correct username."
-  defp check_nil(nil, :private_key),  do: "Invalid credentials. Please try again."
-  defp check_nil(user, :private_key), do: user.private_key
-  defp check_nil(user, :public_key),  do: user.public_key
+  defp check_nil(nil, :public_key),   do: { :error, "Invalid username. Please enter correct username." }
+  defp check_nil(nil, :private_key),  do: { :error, "Invalid credentials. Please try again." }
+  defp check_nil(user, :private_key), do: { :ok, user.private_key }
+  defp check_nil(user, :public_key),  do: { :ok, user.public_key }
 
   defp find_user(username) do
     Agent.get(UserStore.Store, &(Enum.find(&1, fn user ->
