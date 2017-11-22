@@ -1,21 +1,30 @@
-# Ds
+# UserStore
 
 **TODO: Add description**
 
-## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ds` to your list of dependencies in `mix.exs`:
+## Working
 
-```elixir
-def deps do
-  [
-    {:ds, "~> 0.1.0"}
-  ]
-end
-```
+* Go to `05-coders-choice/ds` and execute the following commands.
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ds](https://hexdocs.pm/ds).
+* iex -S mix
+~~~ elixir
 
+iex> UserStore.register {"username", "Pass!234"}
+# :ok
+
+iex> UserStore.display
+# ...
+
+iex> UserStore.get_private_key {"username", "Pass!234"}
+# ...
+
+iex> UserStore.get_public_key "username"
+# ...
+
+iex> Ds.generate_ds {"username", "Pass!234", "hello"}
+# ...
+
+
+  
+~~~
