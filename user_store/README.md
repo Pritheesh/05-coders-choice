@@ -1,6 +1,6 @@
 # UserStore
 
-**TODO: Add description**
+**UserStore module creates users and generates private and public keys for them.**
 
 
 ## Working

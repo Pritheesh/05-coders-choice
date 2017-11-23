@@ -1,7 +1,13 @@
 defmodule Ds.Generator do
 
-  def generate_ds({username, password, message}) do
+  def generate_ds({:password, username, password, message}) do
     get_priv_key(username, password)
+    |> hash_message(message)
+    |> encrypt_digest
+  end
+
+  def generate_ds({:key, key, message}) do
+    { :ok, key }
     |> hash_message(message)
     |> encrypt_digest
   end
@@ -35,13 +41,14 @@ defmodule Ds.Generator do
 
   # For testing
   def compare({message, encr_digest}, username) do
-    {:ok, key} = UserStore.get_public_key(username)
-    {_msg, digest, _key1} = {:ok, key} |> hash_message(message)
+    public_key = {:ok, key} = UserStore.get_public_key(username)
+    {_msg, digest, _key1} = public_key
+                            |> hash_message(message)
     decrypted_digest = :public_key.decrypt_public(encr_digest, key)
-    digest == decrypted_digest
+    check_correct(digest, decrypted_digest)
   end
 
-#  UserStore.register {"pri", "AsdAsd!23"}
-#  Ds.Generator.generate_ds {"pri", "AsdAsd!23", "123"}
+  defp check_correct(digest, decrypted) when digest == decrypted, do: :safe
+  defp check_correct(_digest, _decrypted),                        do: :danger
 
 end

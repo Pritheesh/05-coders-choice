@@ -2,11 +2,16 @@ defmodule UserStore.Login do
 
   use GenServer
 
-  def get_private_key({username, password}) do
+  def get_private_key(cred) do
+    cred
+    |> authenticate
+    |> check_nil(:private_key)
+  end
+
+  defp authenticate({username, password}) do
     username = String.downcase(username)
     password = get_hash(username, password)
     find_user_with_pass(username, password)
-    |> check_nil(:private_key)
   end
 
   def get_public_key(username) do
