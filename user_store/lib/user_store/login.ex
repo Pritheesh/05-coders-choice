@@ -8,10 +8,10 @@ defmodule UserStore.Login do
     |> get_key(:private_key)
   end
 
-  defp authenticate({username, password}) do
+  def get_public_key(username) do
     username = String.downcase(username)
-    password = get_hash(username, password)
-    find_user_with_pass(username, password)
+    find_user(username)
+    |> get_key(:public_key)
   end
 
   def login({_username, _password} = cred) do
@@ -20,14 +20,16 @@ defmodule UserStore.Login do
     |> success?
   end
 
+  defp authenticate({username, password}) do
+    username = String.downcase(username)
+    password = get_hash(username, password)
+    find_user_with_pass(username, password)
+  end
+
+  ##################################################
+
   defp success?(nil),   do: :failure
   defp success?(_user), do: :success
-
-  def get_public_key(username) do
-    username = String.downcase(username)
-    find_user(username)
-    |> get_key(:public_key)
-  end
 
   defp get_key(nil, :public_key),   do: {:error, "Invalid username. Please enter correct username."}
   defp get_key(nil, :private_key),  do: {:error, "Invalid credentials. Please try again."}

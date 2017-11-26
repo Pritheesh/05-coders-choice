@@ -12,6 +12,7 @@ defmodule Messenger.Store do
     { :reply, get_public(state), state }
   end
 
+  # prints the received message and replies with message and signature validity
   def handle_info({:message, from_pid, from, to, message, key, signature}, state) do
     IO.puts "#{from} sent #{message}"
     Messenger.Impl.verify(self(), from_pid, from, to, message, key, signature)
@@ -19,12 +20,12 @@ defmodule Messenger.Store do
   end
 
   def handle_info({:check, _to_pid, to, message, :safe}, state) do
-    IO.puts "#{to} received #{message}, Result: Signature valid. Message Integrity achieved"
+    IO.puts "#{to} received #{message}, Result: Signature valid. Message Integrity achieved."
     {:noreply, state}
   end
 
   def handle_info({:check, _to_pid, to, message, :danger}, state) do
-    IO.puts "#{to} received #{message}, Result: Invalid Signature. Message Integrity failed"
+    IO.puts "#{to} received #{message}, Result: Invalid Signature. Message Integrity failed."
     {:noreply, state}
   end
 

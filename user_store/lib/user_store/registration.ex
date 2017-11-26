@@ -10,6 +10,22 @@ defmodule UserStore.Registration do
 
   def display(), do: get_usernames()
 
+  def hash_password(true, {username, password}) do
+    password = username
+               |> generate_salt
+               |> hash(password)
+               |> Base.encode64
+    {nil, {username, password}}
+  end
+
+  def hash_password(false, { username, password }) do
+    error = "Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 special " <>
+            "character, 1 number and minimum length of 8"
+    {error, {username, password}}
+  end
+
+  ###########################################
+
   defp put_state({ nil, {username, password}, { public, private }}) do
     {
       :ok,
@@ -104,20 +120,6 @@ defmodule UserStore.Registration do
   defp validate_password(password) do
     ~r/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@#!%*?&])[A-Za-z\d$@#!%*?&]{8,}/
     |> Regex.match?(password)
-  end
-
-  def hash_password(true, {username, password}) do
-    password = username
-              |> generate_salt
-              |> hash(password)
-              |> Base.encode64
-    {nil, {username, password}}
-  end
-
-  def hash_password(false, { username, password }) do
-    error = "Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 special " <>
-            "character, 1 number and minimum length of 8"
-    {error, {username, password}}
   end
 
   defp generate_salt(string), do: Base.encode32(string)
