@@ -7,13 +7,6 @@ defmodule Ds.Generator do
     |> encrypt_digest
   end
 
-  # signs the message using the private key
-  def sign({:key, key, message}) do
-    { :ok, key }
-    |> hash_message(message)
-    |> encrypt_digest
-  end
-
   # verifies the signature against the message
   def verify({message, signature, public_key}) do
 #    message = "ok"
