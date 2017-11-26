@@ -20,13 +20,13 @@ defmodule UserStore.Login do
     |> success?
   end
 
+  ##################################################
+
   defp authenticate({username, password}) do
     username = String.downcase(username)
     password = get_hash(username, password)
     find_user_with_pass(username, password)
   end
-
-  ##################################################
 
   defp success?(nil),   do: :failure
   defp success?(_user), do: :success
