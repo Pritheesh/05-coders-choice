@@ -12,6 +12,10 @@ defmodule UserStore.Server do
     { :reply, Registration.register(credentials), state }
   end
 
+  def handle_call({ :login, credentials }, _from, state) do
+    { :reply, Login.login(credentials), state }
+  end
+
   def handle_call(:display, _from, state) do
     { :reply, Registration.display(), state }
   end

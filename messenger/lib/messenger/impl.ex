@@ -1,42 +1,46 @@
 defmodule Messenger.Impl do
 
-  def create_process(credentials) do
+  # Checks the credentials of the user and starts a child process
+  def initiate(credentials) do
     authenticate(credentials)
     |> create
   end
 
-  def chat_client() do
-
-    receive do
-      { _from, username, message, digest } ->
-        IO.inspect Ds.Generator.compare({message, digest}, username)
-    end
-
-    chat_client()
-
+  def send_message({from, password, to, message}) do
+    from = String.downcase(from)
+    UserStore.login({from, password})
+    |> get_pid_and_send(from, password, to, message)
   end
 
-  def send_message({from, password, to, message}) do
-    {from, pid_from, pid_to} = down_and_pid(from, to)
-    { _msg, digest } = Ds.generate_ds {:password, from, password, message}
-    send pid_to, { pid_from, from, message, digest }
+  def verify(to_pid, from_pid, _from, to, message, key, signature) do
+    {result, msg} = Ds.verify({message, signature, key})
+    send from_pid, {:check, to_pid, to, msg, result}
     :ok
   end
 
   ##############################
 
+  defp get_pid_and_send(:success, from, password, to, message) do
+    {from_pid, to_pid, key} = get_required(from, to)
+    {_msg, signature} = Ds.sign {:password, from, password, message}
+    send to_pid, {:message, from_pid, from, to, message, key, signature}
+    :ok
+  end
+
+  defp get_pid_and_send(:failure, _from, _password, _to, _message) do
+    raise "Invalid username or password. Please try again."
+  end
+
+  defp get_required(from, to) do
+    from_pid = :global.whereis_name {:messenger, from}
+    to_pid = :global.whereis_name {:messenger, to}
+    key = GenServer.call(from_pid, :get_public)
+    {from_pid, to_pid, key}
+  end
+
   defp authenticate({username, _password} = cred) do
     UserStore.get_private_key(cred)
     |> get_public(username)
-  end
-
-  defp create({:error, error}),   do: error
-
-  defp create({public, username}) do
-    pid = spawn_link(__MODULE__, :chat_client, [])
-    username = String.downcase(username)
-    :global.register_name(String.to_atom(username), pid)
-    Supervisor.start_child(Messenger.Supervisor, [{username, public, pid}])
   end
 
   defp get_public({:ok, _private}, username) do
@@ -46,22 +50,10 @@ defmodule Messenger.Impl do
 
   defp get_public(error, _username), do: error
 
-  defp get_pid(name) do
-    name
-    |> String.to_atom
-    |> :global.whereis_name
-    |> check_undefined
-  end
-
-  defp check_undefined(:undefined), do: raise "Invalid username entered"
-  defp check_undefined(name),       do: name
-
-  defp down_and_pid(from, to) do
-    from = String.downcase from
-    to = String.downcase to
-    pid_from = get_pid(from)
-    pid_to = get_pid(to)
-    {from, pid_from, pid_to}
+  defp create({:error, error}),   do: error
+  defp create({public, username}) do
+    username = String.downcase(username)
+    Supervisor.start_child(Messenger.Supervisor, [{username, public}])
   end
 
 end

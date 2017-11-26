@@ -11,4 +11,5 @@ defmodule Messenger.Application do
     opts = [strategy: :one_for_one]
     {:ok, _pid} = Supervisor.start_link(children, opts)
   end
+
 end
