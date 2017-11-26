@@ -30,7 +30,7 @@ pra received hello, Result: Signature valid. Message Integrity achieved.
 * `:danger` indicates that the message has been modified and hence the encrypted message digest
 and the generated message digest are not the same.
 
-* Now uncomment the line where message is assigned a string literal in the verify function
+* Now uncomment the line where message is assigned a string literal "ok" in the verify function
  and execute again in ds/lib/ds/generator.
 
 ```elixir
