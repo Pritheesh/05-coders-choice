@@ -11,7 +11,7 @@
 ~~~ elixir
 
 iex> UserStore.register {"username", "Pass!234"}
-# :ok
+# {:ok, :ok}
 
 iex> UserStore.display
 # ...
@@ -21,5 +21,12 @@ iex> UserStore.get_private_key {"username", "Pass!234"}
 
 iex> UserStore.get_public_key "username"
 # ...
+
+iex(7)> UserStore.login {"username", "hello"}
+:failure
+
+iex(8)> UserStore.login {"username", "Pass!234"}
+:success
+
   
 ~~~

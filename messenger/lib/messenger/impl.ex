@@ -1,7 +1,7 @@
 defmodule Messenger.Impl do
 
   # Checks the credentials of the user and starts a child process
-  def initiate(credentials) do
+  def start(credentials) do
     authenticate(credentials)
     |> create
   end

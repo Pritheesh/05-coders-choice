@@ -17,7 +17,7 @@ defmodule UserStore.Login do
   def login({_username, _password} = cred) do
     cred
     |> authenticate
-    |> success?
+    |> get_key(nil)
   end
 
   ##################################################
@@ -28,9 +28,8 @@ defmodule UserStore.Login do
     find_user_with_pass(username, password)
   end
 
-  defp success?(nil),   do: :failure
-  defp success?(_user), do: :success
-
+  defp get_key(nil, nil),           do: :failure
+  defp get_key(_user, nil),         do: :success
   defp get_key(nil, :public_key),   do: {:error, "Invalid username. Please enter correct username."}
   defp get_key(nil, :private_key),  do: {:error, "Invalid credentials. Please try again."}
   defp get_key(user, :private_key), do: {:ok, user.private_key}

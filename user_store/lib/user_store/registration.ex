@@ -19,8 +19,8 @@ defmodule UserStore.Registration do
   end
 
   def hash_password(false, { username, password }) do
-    error = "Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 special " <>
-            "character, 1 number and minimum length of 8"
+    error = "Password must contain at least 1 lowercase letter, 1 uppercase" <>
+            " letter, 1 special character, 1 number and minimum length of 8"
     {error, {username, password}}
   end
 
@@ -44,6 +44,8 @@ defmodule UserStore.Registration do
 
   defp put_state({error, _credentials}), do: {:error, error}
 
+  # Reference: http://lewismanor.blogspot.com/2014/03/simple-public-private-key-erlang.html
+  # Used this site as a reference
   defp generate_keys({ nil, credentials }) do
     public_key  = "public_key.pem"
     private_key = "private_key.pem"

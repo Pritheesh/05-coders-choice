@@ -45,4 +45,14 @@ defmodule UserStore.UserStoreTest do
     assert error == "Invalid credentials. Please try again."
   end
 
+  test "login success" do
+    assert { :ok, :ok } == UserStore.register {"noname", "Asdasd!23"}
+    assert :success == UserStore.login({"noname", "Asdasd!23"})
+  end
+
+  test "login failure" do
+    assert { :ok, :ok } == UserStore.register {"anonymous", "Asdasd!23"}
+    assert :failure == UserStore.login({"anonymus", "Asdasd!23"})
+  end
+
 end

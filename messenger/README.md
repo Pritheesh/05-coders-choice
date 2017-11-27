@@ -1,6 +1,7 @@
 # Messenger
 
-**The Messenger module is to check implementation of the UserStore and Digital Signature modules**
+**The Messenger module is to check implementation of the UserStore and Digital Signature
+ modules**
 
 
 ## Working
@@ -8,15 +9,16 @@
 * Go to `05-coders-choice/messenger` and execute the following commands.
 
 * iex -S mix
+
 ~~~ elixir
 
-iex(1)> UserStore.register {"Pri", "AsdAsd!23"}
+iex(1)> Messenger.register {"Pri", "AsdAsd!23"}
 {:ok, :ok}
-iex(2)> UserStore.register {"Pra", "AsdAsd!23"}
+iex(2)> Messenger.register {"Pra", "AsdAsd!23"}
 {:ok, :ok}
-iex(3)> Messenger.initiate {"Pri", "AsdAsd!23"}
+iex(3)> Messenger.start {"Pri", "AsdAsd!23"}
 {:ok, #PID<0.160.0>}
-iex(4)> Messenger.initiate {"Pra", "AsdAsd!23"}
+iex(4)> Messenger.start {"Pra", "AsdAsd!23"}
 {:ok, #PID<0.162.0>}
 iex(5)> Messenger.send_message {"pri", "AsdAsd!23", "pra", "hello"}
 pri sent hello
@@ -42,17 +44,18 @@ and the generated message digest are not the same.
     check_correct(message, digest, decrypted_digest)
   end
 ```
+
 * iex -S mix
 
 ~~~ elixir
 
-iex(1)> UserStore.register {"Pri", "AsdAsd!23"}
+iex(1)> Messenger.register {"Pri", "AsdAsd!23"}
 {:ok, :ok}
-iex(2)> UserStore.register {"Pra", "AsdAsd!23"}
+iex(2)> Messenger.register {"Pra", "AsdAsd!23"}
 {:ok, :ok}
-iex(3)> Messenger.initiate {"Pri", "AsdAsd!23"}
+iex(3)> Messenger.start {"Pri", "AsdAsd!23"}
 {:ok, #PID<0.170.0>}
-iex(4)> Messenger.initiate {"Pra", "AsdAsd!23"}
+iex(4)> Messenger.start {"Pra", "AsdAsd!23"}
 {:ok, #PID<0.172.0>}
 iex(5)> Messenger.send_message {"pri", "AsdAsd!23", "pra", "hello"}
 pri sent hello
