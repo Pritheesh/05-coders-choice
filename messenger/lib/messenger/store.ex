@@ -20,12 +20,12 @@ defmodule Messenger.Store do
   end
 
   def handle_info({:check, _to_pid, to, message, :safe}, state) do
-    IO.puts "#{to} received #{message}, Result: Signature valid. Message Integrity achieved."
+    IO.puts "#{to} received #{message}, Result: :safe => Signature valid. Message Integrity achieved."
     {:noreply, state}
   end
 
   def handle_info({:check, _to_pid, to, message, :danger}, state) do
-    IO.puts "#{to} received #{message}, Result: Invalid Signature. Message Integrity failed."
+    IO.puts "#{to} received #{message}, Result: :danger => Invalid Signature. Message Integrity failed."
     {:noreply, state}
   end
 
