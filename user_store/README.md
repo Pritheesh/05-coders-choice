@@ -10,23 +10,22 @@
 * iex -S mix
 ~~~ elixir
 
-iex> UserStore.register {"username", "Pass!234"}
+iex>> UserStore.register {"username", "Pass!234"}
 # {:ok, :ok}
 
-iex> UserStore.display
-# ...
+iex>> UserStore.display
+# [...]
 
-iex> UserStore.get_private_key {"username", "Pass!234"}
-# ...
+iex>> UserStore.get_private_key {"username", "Pass!234"}
+# {...}
 
-iex> UserStore.get_public_key "username"
-# ...
+iex>> UserStore.get_public_key "username"
+# {...}
 
-iex(7)> UserStore.login {"username", "hello"}
+iex>> UserStore.login {"username", "hello"}
 :failure
 
-iex(8)> UserStore.login {"username", "Pass!234"}
+iex>> UserStore.login {"username", "Pass!234"}
 :success
 
-  
 ~~~

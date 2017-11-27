@@ -12,15 +12,19 @@
 
 ~~~ elixir
 
-iex(1)> Messenger.register {"Pri", "AsdAsd!23"}
+iex>> Messenger.register {"Pri", "AsdAsd!23"}
 {:ok, :ok}
-iex(2)> Messenger.register {"Pra", "AsdAsd!23"}
+
+iex>> Messenger.register {"Pra", "AsdAsd!23"}
 {:ok, :ok}
-iex(3)> Messenger.start {"Pri", "AsdAsd!23"}
+
+iex>> Messenger.start {"Pri", "AsdAsd!23"}
 {:ok, #PID<0.160.0>}
-iex(4)> Messenger.start {"Pra", "AsdAsd!23"}
+
+iex>> Messenger.start {"Pra", "AsdAsd!23"}
 {:ok, #PID<0.162.0>}
-iex(5)> Messenger.send_message {"pri", "AsdAsd!23", "pra", "hello"}
+
+iex>> Messenger.send_message {"pri", "AsdAsd!23", "pra", "hello"}
 pri sent hello
 :ok
 pra received hello, Result: Signature valid. Message Integrity achieved.
