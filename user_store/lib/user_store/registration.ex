@@ -10,23 +10,23 @@ defmodule UserStore.Registration do
 
   def display(), do: get_usernames()
 
-  def hash_password(true, {username, password}) do
+  def hash_password(true, { username, password }) do
     password = username
                |> generate_salt
                |> hash(password)
                |> Base.encode64
-    {nil, {username, password}}
+    { nil, { username, password } }
   end
 
   def hash_password(false, { username, password }) do
     error = "Password must contain at least 1 lowercase letter, 1 uppercase" <>
             " letter, 1 special character, 1 number and minimum length of 8"
-    {error, {username, password}}
+    { error, { username, password } }
   end
 
   ###########################################
 
-  defp put_state({ nil, {username, password}, { public, private }}) do
+  defp put_state({ nil, { username, password }, { public, private } }) do
     {
       :ok,
       Agent.update(UserStore.Store, fn store ->
@@ -42,7 +42,7 @@ defmodule UserStore.Registration do
     }
   end
 
-  defp put_state({error, _credentials}), do: {:error, error}
+  defp put_state({ error, _credentials }), do: { :error, error }
 
   # Reference: http://lewismanor.blogspot.com/2014/03/simple-public-private-key-erlang.html
   # Used this site as a reference and implemented the elixir version to generate the keys
@@ -51,21 +51,21 @@ defmodule UserStore.Registration do
     public_key  = "public_key.pem"
     private_key = "private_key.pem"
 
-    {_, 0} = System.cmd "openssl", [ "genrsa", "-out", private_key, "2048" ], [stderr_to_stdout: true]
-    {_, 0} = System.cmd "openssl",
-      ["rsa", "-pubout", "-in", private_key, "-out", public_key ], [stderr_to_stdout: true]
+    { _, 0 } = System.cmd "openssl", [ "genrsa", "-out", private_key, "2048" ], [ stderr_to_stdout: true ]
+    { _, 0 } = System.cmd "openssl",
+      [ "rsa", "-pubout", "-in", private_key, "-out", public_key ], [ stderr_to_stdout: true ]
 
-    {nil, credentials, read_files(public_key, private_key)}
+    { nil, credentials, read_files(public_key, private_key) }
   end
 
   defp generate_keys(error), do: error
 
   defp read_files(public_key, private_key) do
-    {:ok, private} = File.read(private_key)
-    {:ok, public} = File.read(public_key)
+    { :ok, private } = File.read(private_key)
+    { :ok, public } = File.read(public_key)
     File.rm!(private_key)
     File.rm!(public_key)
-    {decode(public), decode(private)}
+    { decode(public), decode(private) }
   end
 
   defp decode(key) do
@@ -85,7 +85,7 @@ defmodule UserStore.Registration do
     error = username
             |> validate_length(3, 100)
             |> check_username(user_exists?(username))
-    {error, {username, password}}
+    { error, { username, password } }
   end
 
   defp user_exists?(username) do

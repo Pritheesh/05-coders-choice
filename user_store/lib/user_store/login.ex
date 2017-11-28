@@ -14,7 +14,7 @@ defmodule UserStore.Login do
     |> get_key(:public_key)
   end
 
-  def login({_username, _password} = cred) do
+  def login({ _username, _password } = cred) do
     cred
     |> authenticate
     |> get_key(nil)
@@ -22,7 +22,7 @@ defmodule UserStore.Login do
 
   ##################################################
 
-  defp authenticate({username, password}) do
+  defp authenticate({ username, password }) do
     username = String.downcase(username)
     password = get_hash(username, password)
     find_user_with_pass(username, password)
@@ -30,10 +30,10 @@ defmodule UserStore.Login do
 
   defp get_key(nil, nil),           do: :failure
   defp get_key(_user, nil),         do: :success
-  defp get_key(nil, :public_key),   do: {:error, "Invalid username. Please enter correct username."}
-  defp get_key(nil, :private_key),  do: {:error, "Invalid credentials. Please try again."}
-  defp get_key(user, :private_key), do: {:ok, user.private_key}
-  defp get_key(user, :public_key),  do: {:ok, user.public_key}
+  defp get_key(nil, :public_key),   do: { :error, "Invalid username. Please enter correct username." }
+  defp get_key(nil, :private_key),  do: { :error, "Invalid credentials. Please try again." }
+  defp get_key(user, :private_key), do: { :ok, user.private_key }
+  defp get_key(user, :public_key),  do: { :ok, user.public_key }
 
   defp find_user(username) do
     Agent.get(UserStore.Store, &(Enum.find(&1, fn user ->
@@ -48,7 +48,7 @@ defmodule UserStore.Login do
   end
 
   defp get_hash(username, pass) do
-    {nil, {_username, password}} = UserStore.Registration.hash_password(true, {username, pass})
+    { nil, { _username, password } } = UserStore.Registration.hash_password(true, { username, pass })
     password
   end
 
